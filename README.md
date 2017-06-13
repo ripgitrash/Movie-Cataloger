@@ -52,6 +52,6 @@
 * Find new bugs and fix them.
 * Imrove design, imporve button names, etc.
 
-### Major contributors [Shubham Mathur](https://shubhammathur.me/), [Rishab Garg](http://rishabgarg.me).
+### Major contributors  [Rishab Garg](http://rishabgarg.me), [Shubham Mathur](https://shubhammathur.me/).
 ### [Other contributors](https://github.com/googleknight/MovieCataloger/graphs/contributors)
 #### Contributors are welcomed to contribute to this project, just fork this repo and raise a pull request.
