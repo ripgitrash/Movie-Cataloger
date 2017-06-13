@@ -1,7 +1,5 @@
 # MovieCataloger
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5fd4ed1810824df1a75e1d7a429a3a89)](https://www.codacy.com/app/shubham.mathur2014/MovieCataloger?utm_source=github.com&utm_medium=referral&utm_content=googleknight/MovieCataloger&utm_campaign=badger)
-
 > Movie Cataloger is a cataloging and organizing software developed for personal use only.
 > It helps user to maintain their movie collection efficiently and in an organized way.
 > It is capable to scan and search recursively the desired folders, drives for movies and adds them to catalog.
