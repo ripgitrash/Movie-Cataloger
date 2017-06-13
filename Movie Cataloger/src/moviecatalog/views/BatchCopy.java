@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.Color;
 
 public class BatchCopy extends JDialog {
 	private final JPanel contentPanel = new JPanel();
@@ -105,6 +106,7 @@ public class BatchCopy extends JDialog {
 				Toolkit.getDefaultToolkit().getImage(BatchCopy.class.getResource("/moviecatalog/resources/icon.png")));
 
 		JPanel panel = new JPanel();
+		panel.setBackground(Color.WHITE);
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
@@ -116,10 +118,13 @@ public class BatchCopy extends JDialog {
 						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
 		prgbar = new JProgressBar();
+		prgbar.setBackground(Color.WHITE);
 
 		lblCopy = new JLabel("Copying Movies");
+		lblCopy.setBackground(Color.WHITE);
 
 		lblupdate = new JLabel("");
+		lblupdate.setBackground(Color.WHITE);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createSequentialGroup().addContainerGap(180, Short.MAX_VALUE).addComponent(lblCopy)
@@ -147,7 +152,7 @@ public class BatchCopy extends JDialog {
 		obj.setDaemon(true);
 		obj.start();
 	}
-
+}
 	//A daemon thread to copy files in background
 	class BatchCopyProgress extends Thread {
 		BatchCopy obj;
@@ -171,15 +176,14 @@ public class BatchCopy extends JDialog {
 			obj.getPrgbar().setMaximum(counter);
 			for (i = 0; i < counter; i++) {
 				for (j = 0; j < n; j++) {
-					boolean chk = (boolean) (obj.getModel().getValueAt(j, 0));
-					if (chk) {
+					if ((boolean) (obj.getModel().getValueAt(j, 0))) {
 						String moviename = (String) obj.getModel().getValueAt(j, 1);
 						filefullpath = Tools.getFullPath(moviename);
 						Path source = Paths.get(filefullpath);
 						String name = source.getFileName().toString();
-						Path destn = Paths.get(dest + name);
+						Path destn = Paths.get(obj.getDest() + name);
 						CopyOption[] options = new CopyOption[] { StandardCopyOption.REPLACE_EXISTING,
-								StandardCopyOption.COPY_ATTRIBUTES };// Maintains User Privilage
+								StandardCopyOption.COPY_ATTRIBUTES };// Maintains User Privilege
 						try {
 							Files.copy(source, destn, options);
 						} catch (IOException e1) {
@@ -199,4 +203,4 @@ public class BatchCopy extends JDialog {
 
 		}
 	}
-}
+

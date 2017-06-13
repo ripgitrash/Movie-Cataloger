@@ -40,6 +40,7 @@ import java.sql.ResultSet;
 import java.awt.event.ActionEvent;
 import javax.swing.ScrollPaneConstants;
 import java.awt.Toolkit;
+import java.awt.Color;
 
 public class UpdateMovieDetails extends JDialog {
 	
@@ -119,28 +120,38 @@ public class UpdateMovieDetails extends JDialog {
 			
 		setBounds(100, 100, 750, 533);
 		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
 		lblTitle = new JLabel("Title");
+		lblTitle.setBackground(Color.WHITE);
 		
 		lblDirector = new JLabel("Director");
+		lblDirector.setBackground(Color.WHITE);
 		
 		lblYear = new JLabel("Year");
+		lblYear.setBackground(Color.WHITE);
 		
 		lblLanguage = new JLabel("Language");
+		lblLanguage.setBackground(Color.WHITE);
 		
 		lblCountry = new JLabel("Country");
+		lblCountry.setBackground(Color.WHITE);
 		lblCountry.setVisible(false);
 		lblCountry.setEnabled(false);
 		
 		lblRating = new JLabel("Rating");
+		lblRating.setBackground(Color.WHITE);
 		
 		lblImdbRating = new JLabel("IMDB rating");
+		lblImdbRating.setBackground(Color.WHITE);
 		
 		lblMyRating = new JLabel("My Rating");
+		lblMyRating.setBackground(Color.WHITE);
 		
 		lblActors = new JLabel("Actors");
+		lblActors.setBackground(Color.WHITE);
 		
 		txtTitle = new JTextField();
 		txtTitle.setColumns(10);
@@ -173,6 +184,7 @@ public class UpdateMovieDetails extends JDialog {
 		
 		
 		chckbxWatched = new JCheckBox("Watched");
+		chckbxWatched.setBackground(Color.WHITE);
 		
 		
 		spnMyRating = new JSpinner();
@@ -456,6 +468,7 @@ public class UpdateMovieDetails extends JDialog {
 				{					
 					IMDBid=obj.getIMDBId();
 					poster=obj.getPoster();
+					
 				}
 				else
 				{					

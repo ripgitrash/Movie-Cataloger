@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Toolkit;
+import java.awt.Color;
 
 public class AddingMoviesProgress extends JDialog {
 
@@ -85,15 +86,20 @@ public class AddingMoviesProgress extends JDialog {
 		setTitle("Adding movies to catalog");
 		setBounds(100, 100, 450, 150);
 		contentPanel = new JPanel();
+		contentPanel.setBackground(Color.WHITE);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 
 		pgrsbr = new JProgressBar();
+		pgrsbr.setOpaque(true);
+		pgrsbr.setBackground(Color.WHITE);
 
 		lblmovies = new JLabel("Adding movies to catalog");
+		lblmovies.setBackground(Color.WHITE);
 
 		lblprogress = new JLabel("");
+		lblprogress.setBackground(Color.WHITE);
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING).addGroup(
 				gl_contentPanel.createSequentialGroup().addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)

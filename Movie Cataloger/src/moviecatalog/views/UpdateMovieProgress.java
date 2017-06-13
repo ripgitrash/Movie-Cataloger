@@ -38,6 +38,7 @@ import com.omertron.imdbapi.model.ImdbMovieDetails;
 
 import moviecatalog.common.Tools;
 import java.awt.Toolkit;
+import java.awt.Color;
 
 public class UpdateMovieProgress extends JDialog {
 
@@ -113,14 +114,18 @@ public class UpdateMovieProgress extends JDialog {
 		setTitle("Updating movies information");
 		setBounds(100, 100, 450, 150);
 		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 
 		pgrsbr = new JProgressBar();
+		pgrsbr.setBackground(Color.WHITE);
 
 		lblmovies = new JLabel("Updating movies information");
+		lblmovies.setBackground(Color.WHITE);
 
 		lblprogress = new JLabel("");
+		lblprogress.setBackground(Color.WHITE);
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING).addGroup(
 				gl_contentPanel.createSequentialGroup().addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)

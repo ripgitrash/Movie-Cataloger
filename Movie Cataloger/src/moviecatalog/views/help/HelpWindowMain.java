@@ -19,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.Toolkit;
 import javax.swing.JLabel;
+import java.awt.Color;
 
 public class HelpWindowMain extends JFrame {
 
@@ -57,12 +58,15 @@ public class HelpWindowMain extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(0, 10, 1200, 700);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		lblImage = new JLabel("");
+		lblImage.setOpaque(true);
+		lblImage.setBackground(Color.WHITE);
 		lblImage.setAlignmentY(Component.TOP_ALIGNMENT);
 		lblImage.setIcon(Tools.scaleImage(
-				new ImageIcon(HelpWindowMain.class.getResource("/moviecatalog/resources/Help/11.png")), 1175, 648));
+				new ImageIcon(HelpWindowMain.class.getResource("/moviecatalog/resources/Help/13.png")), 1175, 648));
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addComponent(lblImage,

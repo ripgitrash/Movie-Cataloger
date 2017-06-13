@@ -148,6 +148,15 @@ public class MainWindow extends JFrame {
 	private JMenuItem mntmHowToAnalyze;
 	private JMenuItem mntmMainWindowFeatures;
 	private JMenuItem mntmHowToUpdate;
+	private MainWindow ref;
+	
+	public JTable getTblmovie() {
+		return tblmovie;
+	}
+
+	public void setTblmovie(JTable tblmovie) {
+		this.tblmovie = tblmovie;
+	}
 
 	/**
 	 * Launch the application.
@@ -173,10 +182,11 @@ public class MainWindow extends JFrame {
 	public MainWindow() {
 		
 		Tools.createTables(); //Create tables in database if does not exists
-		Tools.checkInvlaidEntries();	//Removes entries of movies which does not exist at their location 
+		boolean x=Tools.checkInvlaidEntries(null);	//Removes entries of movies which does not exist at their location 
 		Tools.checkNew();	//Checks for new movies and gives option to add it.
 		initComponents();
 		createEvents();
+		this.ref=this;
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -204,17 +214,17 @@ public class MainWindow extends JFrame {
 		mntmExit = new JMenuItem("Exit");
 		mnFile.add(mntmExit);
 		
-		mnViewBy = new JMenu("Analyze Collection");
+		mnViewBy = new JMenu("Categorize & Analyze");
 		menuBar.add(mnViewBy);
+		
+		mntmByRating = new JMenuItem("By Genre");
+		mnViewBy.add(mntmByRating);
 		
 		mntmByLanguage = new JMenuItem("By Language");
 	    mnViewBy.add(mntmByLanguage);
 		
 		mntmByYear = new JMenuItem("By Year");
 		mnViewBy.add(mntmByYear);
-		
-		mntmByRating = new JMenuItem("By Genre");
-		mnViewBy.add(mntmByRating);
 		
 		mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
@@ -232,12 +242,13 @@ public class MainWindow extends JFrame {
 		mntmHowToCopy = new JMenuItem("How to copy");
 		mnHelp.add(mntmHowToCopy);
 		
-		mntmHowToAnalyze = new JMenuItem("How to analyze");
+		mntmHowToAnalyze = new JMenuItem("How to categorize and analyze");
 		mnHelp.add(mntmHowToAnalyze);
 		
 		mntmAboutUs = new JMenuItem("About Us");
 		mnHelp.add(mntmAboutUs);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 
@@ -246,6 +257,7 @@ public class MainWindow extends JFrame {
 		///////////////////////////////////////////////////////////////////////////// 
 
 		slptable = new JScrollPane();
+		slptable.setBackground(Color.WHITE);
 
 		btnScanFolders = new JButton("Scan Folders");
 		btnScanFolders.setToolTipText("Click to scan folders for movie");
@@ -265,6 +277,7 @@ public class MainWindow extends JFrame {
 		lblTotalMovies = new JLabel("Total Movies:0");
 
 		pnlMovieDetails = new JPanel();
+		pnlMovieDetails.setBackground(Color.WHITE);
 		pnlMovieDetails.setVisible(false);
 
 		btnBatchUpdate = new JButton("Batch Update");
@@ -348,11 +361,14 @@ public class MainWindow extends JFrame {
 		// Side panel of movie information and its components and properties
 		/////////////////////////////////////////////////////////////////////////////
 		lblPoster = new JLabel("");
+		lblPoster.setBackground(Color.WHITE);
 		lblPoster.setToolTipText("Click to view Poster");
 
 		pnlLocalInfo = new JPanel();
+		pnlLocalInfo.setBackground(Color.WHITE);
 
 		pnlTitle = new JPanel();
+		pnlTitle.setBackground(Color.WHITE);
 
 		GroupLayout gl_pnlMovieDetails = new GroupLayout(pnlMovieDetails);
 		gl_pnlMovieDetails.setHorizontalGroup(gl_pnlMovieDetails.createParallelGroup(Alignment.LEADING)
@@ -385,6 +401,7 @@ public class MainWindow extends JFrame {
 		pnlTitle.add(dataTitle, "2, 2");
 
 		pnlIMDB = new JPanel();
+		pnlIMDB.setBackground(Color.WHITE);
 		pnlTitle.add(pnlIMDB, "2, 6, fill, fill");
 		pnlIMDB.setLayout(new FormLayout(
 				new ColumnSpec[] { FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC,
@@ -478,14 +495,14 @@ public class MainWindow extends JFrame {
 		pnlIMDB.add(slpPlot, "6, 20, fill, fill");
 
 		txtAreaPlot = new JTextArea();
+		txtAreaPlot.setEnabled(false);
+		txtAreaPlot.setBackground(Color.WHITE);
 		txtAreaPlot.setDisabledTextColor(Color.BLACK);
 		txtAreaPlot.setLineWrap(true);
 		txtAreaPlot.setBorder(null);
 		txtAreaPlot.setFocusTraversalKeysEnabled(false);
 		txtAreaPlot.setFocusable(false);
-		txtAreaPlot.setOpaque(false);
 		txtAreaPlot.setWrapStyleWord(true);
-		txtAreaPlot.setEnabled(false);
 		txtAreaPlot.setEditable(false);
 		txtAreaPlot.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		slpPlot.setViewportView(txtAreaPlot);
@@ -547,8 +564,8 @@ public class MainWindow extends JFrame {
 		pnlLocalInfo.add(slpdataLanguage, "4, 12, fill, fill");
 
 		dataAreaLanguage = new JTextArea();
+		dataAreaLanguage.setBackground(Color.WHITE);
 		dataAreaLanguage.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		dataAreaLanguage.setOpaque(false);
 		dataAreaLanguage.setLineWrap(true);
 		dataAreaLanguage.setWrapStyleWord(true);
 		dataAreaLanguage.setEnabled(false);
@@ -562,6 +579,7 @@ public class MainWindow extends JFrame {
 		// Main Movie Table and its properties
 		/////////////////////////////////////////////////////////////////////////////
 		tblmovie = new JTable();
+		tblmovie.setBackground(Color.WHITE);
 		tblmovie.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tblmovie.setModel(
 				new DefaultTableModel(
@@ -605,7 +623,7 @@ public class MainWindow extends JFrame {
 		tblmovie.setRowSorter(rowSorter);
 		tblmovie.changeSelection(0, 0, false, false);
 		if (!Tools.isDBEmpty())
-			loadPanelMovieDetailsData();
+			loadPanelMovieDetailsData(null);
 		slptable.setViewportView(tblmovie);
 		contentPane.setLayout(gl_contentPane);
 	}
@@ -663,11 +681,12 @@ public class MainWindow extends JFrame {
 	//////////////////////////////////////////////////////////////////////////////////
 	//// Movies information is loaded into Panel
 	//////////////////////////////////////////////////////////////////////////////////
-	protected void loadPanelMovieDetailsData() {
+	public void loadPanelMovieDetailsData(String title) {
 		System.out.println("Load invoked");
 		pnlLocalInfo.setVisible(true);
 		pnlMovieDetails.setVisible(true);
-		String title = (String) tblmovie.getValueAt(tblmovie.getSelectedRow(), 1);
+		if(title==null)
+			title = (String) tblmovie.getValueAt(tblmovie.getSelectedRow(), 1);
 		String filefullpath = Tools.getFullPath(title);
 		String IMDBID = Tools.getIMDBID(title);
 		File file = new File("Posters\\" + IMDBID + ".jpg");
@@ -798,7 +817,7 @@ public class MainWindow extends JFrame {
 		mntmByLanguage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				AnalyseLanguage asl=new AnalyseLanguage();
+				AnalyseLanguage asl=new AnalyseLanguage(ref);
 				//asl.setModal(true);
 				asl.setVisible(true);
 				
@@ -807,7 +826,7 @@ public class MainWindow extends JFrame {
 		//Analyzing movie collection by Genre
 		mntmByRating.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				AnalyseGenre asg=new AnalyseGenre();
+				AnalyseGenre asg=new AnalyseGenre(ref);
 				//asg.setModal(true);
 				asg.setVisible(true);
 				
@@ -816,7 +835,7 @@ public class MainWindow extends JFrame {
 		//Analyzing movie collection by Year
 		mntmByYear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				AnalyseYear asy=new AnalyseYear();
+				AnalyseYear asy=new AnalyseYear(ref);
 				//asy.setModal(true);
 				asy.setVisible(true);
 				
@@ -875,6 +894,7 @@ public class MainWindow extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2 && !e.isConsumed()) {
 					e.consume();
+					if(Tools.checkInvlaidEntries((String)tblmovie.getValueAt(tblmovie.getSelectedRow(), 1))==false)
 					try {
 
 						Desktop.getDesktop().open(new File(
@@ -882,6 +902,11 @@ public class MainWindow extends JFrame {
 					} catch (IOException e1) {
 
 						e1.printStackTrace();
+					}
+					else
+					{
+						loadtable();
+						JOptionPane.showMessageDialog(null, "OOPS! That was an invalid entry, its removed now!!");
 					}
 
 				}
@@ -927,7 +952,7 @@ public class MainWindow extends JFrame {
 				loadtable();
 				if (!Tools.isDBEmpty()) {
 					tblmovie.changeSelection(0, 0, false, false);
-					loadPanelMovieDetailsData();
+					loadPanelMovieDetailsData(null);
 				}
 
 			}
@@ -938,7 +963,13 @@ public class MainWindow extends JFrame {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if (tblmovie.getSelectedRow() >= 0 && tblmovie.getSelectedColumn() == 1) {
-					loadPanelMovieDetailsData();
+					if(Tools.checkInvlaidEntries((String)tblmovie.getValueAt(tblmovie.getSelectedRow(), 1))==false)
+						loadPanelMovieDetailsData(null);
+					else
+					{
+						loadtable();
+						JOptionPane.showMessageDialog(null, "OOPS! That was an invalid entry, its removed now!!");						
+					}
 				}
 			}
 		});
@@ -963,7 +994,7 @@ public class MainWindow extends JFrame {
 						stmt.setString(2, title);
 						stmt.executeUpdate();
 						c.close();
-						loadPanelMovieDetailsData(); // showing new contents of that movie in panel 
+						loadPanelMovieDetailsData(null); // showing new contents of that movie in panel 
 						pnlMovieDetails.setVisible(true);
 						loadtable();
 					} catch (Exception e) {
@@ -986,7 +1017,7 @@ public class MainWindow extends JFrame {
 						stmt.setString(2, title);
 						stmt.executeUpdate();//database updated
 						c.close();
-						loadPanelMovieDetailsData();//new contents shown in panel
+						loadPanelMovieDetailsData(null);//new contents shown in panel
 
 					} catch (Exception e) {
 						
@@ -995,15 +1026,25 @@ public class MainWindow extends JFrame {
 				}
 				else if (tme.getType() == TableModelEvent.UPDATE && tme.getColumn() == 0) {// If copy check box value is changed then update label
 					{
+
 						//Getting filesize of each selected movie and showing their sum and count in terms of GB  
+						lblCopy.setVisible(true);
 						String Size=Tools.getSize((String)model.getValueAt(tme.getFirstRow(), 1));
 						Float size=Float.parseFloat(Size.replaceAll("[^0-9\\.]",""));
 						if(Size.endsWith("MB"))
 							size/=1024;
 						if(((boolean) model.getValueAt(tme.getFirstRow(), tme.getColumn()))) //Getting check box value
 						{														
-							copysize+=size;							
-							lblCopy.setText("Selected for copying:"+(++copycount)+" ("+String.format("%.2f", copysize)+" GB)");
+							if(Tools.checkInvlaidEntries((String)tblmovie.getValueAt(tblmovie.getSelectedRow(), 1))==false)
+							{
+								copysize+=size;
+								lblCopy.setText("Selected for copying:"+(++copycount)+" ("+String.format("%.2f", copysize)+" GB)");
+							}
+							else
+							{
+								loadtable();
+								JOptionPane.showMessageDialog(null, "OOPS! That was an invalid entry, its removed now!!");						
+							}							
 						}
 						else
 						{
@@ -1012,7 +1053,7 @@ public class MainWindow extends JFrame {
 						}
 						if(copycount==0)
 							lblCopy.setText("");
-						
+						loadPanelMovieDetailsData(null);
 					}
 				}
 			}
@@ -1031,7 +1072,7 @@ public class MainWindow extends JFrame {
 						try{
 							txtSearch.setText("");
 							tblmovie.changeSelection(0, 0, false, false);// selecting first row
-							loadPanelMovieDetailsData();
+							loadPanelMovieDetailsData(null);
 						} catch (NullPointerException e) {
 
 						}
@@ -1045,8 +1086,8 @@ public class MainWindow extends JFrame {
 		//Play selected movie 
 		btnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
 				if (tblmovie.getSelectedRow() >= 0)
+					if(Tools.checkInvlaidEntries((String)tblmovie.getValueAt(tblmovie.getSelectedRow(), 1))==false)
 					try {
 
 						Desktop.getDesktop().open(new File(
@@ -1054,6 +1095,11 @@ public class MainWindow extends JFrame {
 					} catch (IOException e) {
 
 						e.printStackTrace();
+					}
+					else
+					{
+						loadtable();
+						JOptionPane.showMessageDialog(null, "OOPS! That was an invalid entry, its removed now!!");
 					}
 				else
 					JOptionPane.showMessageDialog(null, "Please select any movie from the list first!!!");
@@ -1064,6 +1110,7 @@ public class MainWindow extends JFrame {
 		btnOpenContiningFolder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (tblmovie.getSelectedRow() >= 0)
+					if(Tools.checkInvlaidEntries((String)tblmovie.getValueAt(tblmovie.getSelectedRow(), 1))==false)
 					try {
 						String fullpath = Tools
 								.getFullPath(tblmovie.getValueAt(tblmovie.getSelectedRow(), 1).toString());
@@ -1071,6 +1118,11 @@ public class MainWindow extends JFrame {
 					} catch (IOException e) {
 
 						e.printStackTrace();
+					}
+					else
+					{
+						loadtable();
+						JOptionPane.showMessageDialog(null, "OOPS! That was an invalid entry, its removed now!!");
 					}
 				else
 					JOptionPane.showMessageDialog(null, "Please select any movie from the list first!!!");
@@ -1089,7 +1141,7 @@ public class MainWindow extends JFrame {
 					obj.setVisible(true);
 					loadtable();
 					tblmovie.changeSelection(row, 0, false, false);
-					loadPanelMovieDetailsData();
+					loadPanelMovieDetailsData(null);
 				} else
 					JOptionPane.showMessageDialog(null, "Please select any movie from the list first!!!");
 			}
@@ -1102,7 +1154,7 @@ public class MainWindow extends JFrame {
 				obj.setVisible(true);
 				loadtable();
 				tblmovie.changeSelection(0, 0, false, false);
-				loadPanelMovieDetailsData();
+				loadPanelMovieDetailsData(null);
 			}
 		});
 		//Selecting Destination path for Batch Copy and Invoking the copy function
@@ -1123,9 +1175,7 @@ public class MainWindow extends JFrame {
 				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				chooser.setAcceptAllFileFilterUsed(false);
 				if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                  copycount=0;
-                  copysize=0;
-				  path=chooser.getSelectedFile().toString();
+                  path=chooser.getSelectedFile().toString();
                   BatchCopy obj=new BatchCopy((DefaultTableModel) tblmovie.getModel(),path);//copies movies to destination
 	              obj.setVisible(true);
 	                

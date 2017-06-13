@@ -25,6 +25,7 @@ import java.io.FileWriter;
 import java.util.Iterator;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
+import java.awt.Color;
 
 
 public class AddFolder extends JDialog {
@@ -71,11 +72,13 @@ public class AddFolder extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 
 		lstmodel = new DefaultListModel<>();
 		lstpath = new JList<>(lstmodel);
+		lstpath.setBackground(Color.WHITE);
 
 		btnAddFolder = new JButton("Add Folder");
 

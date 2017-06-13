@@ -40,6 +40,7 @@ import moviecatalog.common.JCheckBoxList;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JCheckBox;
 import java.awt.Toolkit;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class ScanFolders extends JDialog {
@@ -87,6 +88,7 @@ public class ScanFolders extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 560, 430);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		selectcount=0;
@@ -124,8 +126,10 @@ public class ScanFolders extends JDialog {
 		btnAddMovies.setToolTipText("Add selected movies to Catalogue");
 		
 		lblStatus = new JLabel("");
+		lblStatus.setBackground(Color.WHITE);
 		
 		lblMoviesSelected = new JLabel("");
+		lblMoviesSelected.setBackground(Color.WHITE);
 		
 		slpExtension = new JScrollPane();
 		slpExtension.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -196,6 +200,8 @@ public class ScanFolders extends JDialog {
 		slpExtension.setViewportView(chklstExtension);
 		
 		JLabel lblSelectFileExtension = new JLabel("Select file extension to search");
+		lblSelectFileExtension.setOpaque(true);
+		lblSelectFileExtension.setBackground(Color.WHITE);
 		slpExtension.setColumnHeaderView(lblSelectFileExtension);
 		contentPane.setLayout(gl_contentPane);
 

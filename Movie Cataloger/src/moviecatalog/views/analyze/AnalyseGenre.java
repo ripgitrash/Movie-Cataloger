@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -39,6 +41,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 
 import moviecatalog.common.Tools;
+import moviecatalog.views.MainWindow;
 
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -54,6 +57,12 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JLabel;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormSpecs;
+import com.jgoodies.forms.layout.RowSpec;
+import javax.swing.JCheckBox;
+import java.awt.Color;
 
 public class AnalyseGenre extends JDialog {
 
@@ -62,10 +71,11 @@ public class AnalyseGenre extends JDialog {
 	private JScrollPane scrollPane;
 	private JScrollPane scrollPane_1;
 	private JTable movietbl;
-	private JButton okButton;
 	private JLabel lblChart;
 	private JPanel buttonPane;
 	private JLabel labelRating;
+	private MainWindow mainref;
+	private JCheckBox chckbxShowPieChart;
 
 	public static void main(String[] args) {
 		try {
@@ -76,7 +86,8 @@ public class AnalyseGenre extends JDialog {
 
 	}
 
-	public AnalyseGenre() {
+	public AnalyseGenre(MainWindow ref) {
+		mainref=ref;
 		initcomponents();
 		createChart();
 		createEvents();
@@ -88,11 +99,12 @@ public class AnalyseGenre extends JDialog {
 	//////////////////////////////////////////////////////////////////////////////////
 
 	private void initcomponents() {
-		setTitle("Anaylze By Genre");
+		setTitle("Categorize & Anaylze By Genre");
 		setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(AnalyseLanguage.class.getResource("/moviecatalog/resources/icon.png")));
-		setBounds(100, 100, 1024, 520);
+		setBounds(0, 43, 1024, 520);
 		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		scrollPane = new JScrollPane();
@@ -102,48 +114,38 @@ public class AnalyseGenre extends JDialog {
 		JPanel panel = new JPanel();
 		{
 			buttonPane = new JPanel();
-			{
-				okButton = new JButton("OK");
-				okButton.setActionCommand("OK");
-				getRootPane().setDefaultButton(okButton);
-			}
+			buttonPane.setBackground(Color.WHITE);
 
 			labelRating = new JLabel("");
+			
+			chckbxShowPieChart = new JCheckBox("Show Pie Chart");
+			chckbxShowPieChart.setBackground(Color.WHITE);
+			chckbxShowPieChart.setSelected(true);
 			GroupLayout gl_buttonPane = new GroupLayout(buttonPane);
-			gl_buttonPane.setHorizontalGroup(gl_buttonPane.createParallelGroup(Alignment.TRAILING)
-					.addGroup(gl_buttonPane.createSequentialGroup().addGap(302).addComponent(labelRating)
-							.addPreferredGap(ComponentPlacement.RELATED, 584, Short.MAX_VALUE).addComponent(okButton)
-							.addGap(38)));
-			gl_buttonPane.setVerticalGroup(gl_buttonPane.createParallelGroup(Alignment.LEADING)
-					.addGroup(gl_buttonPane.createSequentialGroup().addGap(5).addGroup(gl_buttonPane
-							.createParallelGroup(Alignment.BASELINE).addComponent(okButton).addComponent(labelRating))
-							.addContainerGap()));
+			gl_buttonPane.setHorizontalGroup(
+				gl_buttonPane.createParallelGroup(Alignment.TRAILING)
+					.addGroup(Alignment.LEADING, gl_buttonPane.createSequentialGroup()
+						.addComponent(chckbxShowPieChart)
+						.addGap(205)
+						.addComponent(labelRating)
+						.addContainerGap(684, Short.MAX_VALUE))
+			);
+			gl_buttonPane.setVerticalGroup(
+				gl_buttonPane.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_buttonPane.createSequentialGroup()
+						.addGroup(gl_buttonPane.createParallelGroup(Alignment.LEADING)
+							.addGroup(gl_buttonPane.createSequentialGroup()
+								.addGap(5)
+								.addComponent(labelRating))
+							.addComponent(chckbxShowPieChart))
+						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+			);
 			buttonPane.setLayout(gl_buttonPane);
 		}
-		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
-		gl_contentPanel.setHorizontalGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPanel.createSequentialGroup().addGroup(gl_contentPanel
-						.createParallelGroup(Alignment.LEADING)
-						.addComponent(buttonPane, GroupLayout.DEFAULT_SIZE, 886, Short.MAX_VALUE)
-						.addGroup(gl_contentPanel.createSequentialGroup()
-								.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 592, GroupLayout.PREFERRED_SIZE)))
-						.addContainerGap()));
-		gl_contentPanel.setVerticalGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPanel
-				.createSequentialGroup()
-				.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(panel, 0, 0, Short.MAX_VALUE)
-						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
-						.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE))
-				.addPreferredGap(ComponentPlacement.UNRELATED)
-				.addComponent(buttonPane, GroupLayout.PREFERRED_SIZE, 33, Short.MAX_VALUE)));
 
 		lblChart = new JLabel("");
+		lblChart.setOpaque(true);
+		lblChart.setBackground(Color.WHITE);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(gl_panel.createParallelGroup(Alignment.TRAILING).addComponent(lblChart,
 				GroupLayout.DEFAULT_SIZE, 592, Short.MAX_VALUE));
@@ -174,7 +176,22 @@ public class AnalyseGenre extends JDialog {
 			gentble.getColumnModel().getColumn(0).setPreferredWidth(618);
 			scrollPane.setViewportView(gentble);
 		}
-		contentPanel.setLayout(gl_contentPanel);
+		contentPanel.setLayout(new FormLayout(new ColumnSpec[] {
+				FormSpecs.LABEL_COMPONENT_GAP_COLSPEC,
+				ColumnSpec.decode("106px"),
+				FormSpecs.UNRELATED_GAP_COLSPEC,
+				ColumnSpec.decode("270px"),
+				FormSpecs.UNRELATED_GAP_COLSPEC,
+				ColumnSpec.decode("592px"),},
+			new RowSpec[] {
+				FormSpecs.LINE_GAP_ROWSPEC,
+				RowSpec.decode("427px"),
+				FormSpecs.UNRELATED_GAP_ROWSPEC,
+				RowSpec.decode("33px"),}));
+		contentPanel.add(buttonPane, "2, 4, 5, 1, fill, fill");
+		contentPanel.add(scrollPane, "2, 2, fill, top");
+		contentPanel.add(scrollPane_1, "4, 2, fill, top");
+		contentPanel.add(panel, "6, 2, left, top");
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//// This function populates the Genre Table with distinct Genres and plots the pie chart
@@ -259,14 +276,8 @@ public class AnalyseGenre extends JDialog {
 	//// This method contains all of the code for creating events.
 	//////////////////////////////////////////////////////////////
 	
-	// OK button
-	private void createEvents() {
-		okButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				dispose();
-			}
 
-		});
+	private void createEvents() {
 
 		// Selecting a particular genre range
 		gentble.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -279,14 +290,14 @@ public class AnalyseGenre extends JDialog {
 				}
 			}
 		});
-		// Showing IMDB Rating of Movie
+		// Showing IMDB Rating of Movie and other data in main window 
 		movietbl.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if (movietbl.getSelectedRow() >= 0 && movietbl.getSelectedColumn() == 0) {
 					String movieSelected = movietbl.getValueAt(movietbl.getSelectedRow(), 0).toString();
-					String rating=Tools.getRating(movieSelected);
-					labelRating.setText("IMDB Rating "+rating);
+					labelRating.setText("IMDB Rating "+Tools.getRating(movieSelected));
+					mainref.loadPanelMovieDetailsData(movieSelected);
 				}
 			}
 		});
@@ -309,5 +320,18 @@ public class AnalyseGenre extends JDialog {
 			}
 		});
 
+		
+		//Toggle Pie Chart
+		chckbxShowPieChart.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				if (chckbxShowPieChart.isSelected()) {
+					setBounds(0, 43, 1024, 520);
+
+				} else {
+					setBounds(0, 43, 420, 520);
+				}
+			}
+		});
+		
 	}
 }

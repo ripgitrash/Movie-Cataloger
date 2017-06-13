@@ -23,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 public class HelpWindowUpdateMovie extends JFrame {
 
@@ -63,10 +64,13 @@ public class HelpWindowUpdateMovie extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(0, 10, 1200, 700);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 
 		lblImage = new JLabel("");
+		lblImage.setOpaque(true);
+		lblImage.setBackground(Color.WHITE);
 		lblImage.setAlignmentY(Component.TOP_ALIGNMENT);
 		setImage();
 		btnNext = new JButton("Next");
@@ -114,7 +118,7 @@ public class HelpWindowUpdateMovie extends JFrame {
 
 	private void setImage() {
 		ImageIcon img = new ImageIcon(
-				HelpWindowUpdateMovie.class.getResource("/moviecatalog/resources/Help/" + (11 + helpcount) + ".png"));
+				HelpWindowUpdateMovie.class.getResource("/moviecatalog/resources/Help/" + (13 + helpcount) + ".png"));
 		int height = img.getIconHeight() < 610 ? img.getIconHeight() : 610;
 		int width = img.getIconWidth() < 1175 ? img.getIconWidth() : 1175;
 		lblImage.setIcon(Tools.scaleImage((img), width, height));

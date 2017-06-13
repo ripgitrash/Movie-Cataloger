@@ -645,7 +645,7 @@ public class Tools {
 	/**
 	 * Removes invalid entries from catalog. Invalid like file moved or renamed or deleted but still exists in catalog with old data
 	 */
-	public static void checkInvlaidEntries() {
+	public static boolean checkInvlaidEntries(String name) {
 		Connection c;
 		Statement stmt;
 		try {
@@ -653,26 +653,50 @@ public class Tools {
 			c = DriverManager.getConnection("jdbc:sqlite:" + Tools.getDBNAME());
 			System.out.println("Opened database successfully");
 			stmt = c.createStatement();
-			ResultSet res = stmt.executeQuery("select Title,FileFullPath from LocalInfo");
-			int count = 0;
-			List<String> obselete = new ArrayList<String>();
-			while (res.next()) {
-				File file = new File(res.getString("FileFullPath"));
-				if (!file.exists()) {
-					obselete.add(res.getString("Title")); //Adding invalid entries into list
-					count++; //counting invalid entries
+			ResultSet res ;
+			if (name==null)
+			{
+				res= stmt.executeQuery("select Title,FileFullPath from LocalInfo");
+				int count = 0;
+				List<String> obselete = new ArrayList<String>();
+				while (res.next()) {
+					File file = new File(res.getString("FileFullPath"));
+					if (!file.exists()) {
+						obselete.add(res.getString("Title")); //Adding invalid entries into list
+						count++; //counting invalid entries
+					}
+				}
+				c.close();
+				for (String title : obselete) {
+					System.out.println("Removing " + title);
+					removeMovie(title);// deleting movies one by one
+				}
+				if (count > 0)
+				{
+					JOptionPane.showMessageDialog(null, "Invalid entries removed " + count);
+					return true;
 				}
 			}
-			c.close();
-			for (String title : obselete) {
-				System.out.println("Removing " + title);
-				removeMovie(title);// deleting movies one by one
+			else
+			{
+				PreparedStatement pstmt=c.prepareStatement("select Title,FileFullPath from LocalInfo where Title=?");
+				pstmt.setString(1,name);
+				res = pstmt.executeQuery();
+				while (res.next()) {
+					File file = new File(res.getString("FileFullPath"));
+					if (!file.exists()) {
+						res.close();
+						c.close();						
+						removeMovie(name);// deleting invalid movie						
+						return true;						
+					}
+				}
 			}
-			if (count > 0)
-				JOptionPane.showMessageDialog(null, "Invalid entries removed " + count);
+			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
+		return false;
 	}
 	/**
 	 * Checks in the set folders if any new movies are available

@@ -37,6 +37,7 @@ import java.io.File;
 import java.awt.event.ActionEvent;
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.awt.Color;
 
 public class SearchMovieInfo extends JDialog {
 	private JButton btnSelect;
@@ -47,6 +48,7 @@ public class SearchMovieInfo extends JDialog {
 	private JTable tblmovie;
 	private JLabel lblStatus;
 	private String IMDBId="0";
+	private MyThread thread;
 	private int poster=0;
 
 	public int getPoster() {
@@ -111,7 +113,6 @@ public class SearchMovieInfo extends JDialog {
 	 * Create the dialog.
 	 */
 	public SearchMovieInfo(String moviename,String year) {
-		
 		this.moviename=moviename; //initialize movie name from the calling Method. 
 		if(!year.isEmpty())
 			this.year=Integer.parseInt(year); //Initializing year for search by year method
@@ -125,6 +126,7 @@ public class SearchMovieInfo extends JDialog {
 	//// creating and initializing components.
 	//////////////////////////////////////////////////////////////////////////////////
 	private void initComponents() {		
+		getContentPane().setBackground(Color.WHITE);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(SearchMovieInfo.class.getResource("/moviecatalog/resources/icon.png")));
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setTitle("Select a movie title");
@@ -139,6 +141,7 @@ public class SearchMovieInfo extends JDialog {
 		scrollPane = new JScrollPane();
 		
 		lblStatus = new JLabel("");
+		lblStatus.setBackground(Color.WHITE);
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -170,6 +173,7 @@ public class SearchMovieInfo extends JDialog {
 		);
 		
 		tblmovie = new JTable();
+		tblmovie.setBackground(Color.WHITE);
 		tblmovie.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		tblmovie.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tblmovie.setModel(
@@ -208,8 +212,10 @@ public class SearchMovieInfo extends JDialog {
 		if(Tools.netIsAvailable())
 		{			
 			MyThread thread=new MyThread(this);
+			this.thread=thread;
 			thread.setDaemon(true);
-			thread.start();			
+			thread.start();	
+			
 		}
 		else
 		{	
@@ -247,6 +253,9 @@ public class SearchMovieInfo extends JDialog {
 				if(index>=0)
 				{
 					IMDBId=(String)model.getValueAt(tblmovie.getSelectedRow(),0);
+					if(thread.isAlive())
+						thread.stop();
+					while(thread.isAlive());
 					deletetempfiles(index);//delete other temporary poster images except the selected 
 					File file = new File(index+".jpg");
 					if (file.exists())
@@ -312,7 +321,7 @@ class MyThread extends Thread{
 				JOptionPane.showMessageDialog(null,"No movie found");
 			for (SearchObject so : result) {
 				try{
-				if (so instanceof ImdbMovieDetails && ((ImdbMovieDetails) so).getType().equals("feature")) {
+				if (so instanceof ImdbMovieDetails &&( ((ImdbMovieDetails) so).getType().equals("feature") ||((ImdbMovieDetails) so).getType().equals("video"))) {
 					if(!so.getImage().getUrl().isEmpty())
 					{						
 						if(obj.getYear()!=0)

@@ -29,6 +29,7 @@ import java.sql.ResultSet;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.Toolkit;
+import java.awt.Color;
 
 public class BatchUpdate extends JDialog {
 
@@ -72,6 +73,7 @@ public class BatchUpdate extends JDialog {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(BatchUpdate.class.getResource("/moviecatalog/resources/icon.png")));
 		setBounds(100, 100, 516, 370);
 		contentPanel = new JPanel();
+		contentPanel.setBackground(Color.WHITE);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -85,8 +87,10 @@ public class BatchUpdate extends JDialog {
 		btnUpdateByFiltering = new JButton("Update by filtering moviename");
 
 		lblStatus = new JLabel("");
+		lblStatus.setBackground(Color.WHITE);
 
 		lblMovieSelected = new JLabel("");
+		lblMovieSelected.setBackground(Color.WHITE);
 
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)

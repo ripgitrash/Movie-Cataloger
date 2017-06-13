@@ -1,29 +1,22 @@
 package moviecatalog.views.help;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Toolkit;
 
-import javax.swing.JButton;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
-
-import moviecatalog.common.Tools;
-
-import java.awt.Toolkit;
-import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
-import java.awt.Dimension;
-import java.awt.Window.Type;
-import java.awt.Point;
+import java.awt.Color;
 
 public class AboutUs extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JPanel panel;
+	
 
 	/**
 	 * Launch the application.
@@ -50,6 +43,7 @@ public class AboutUs extends JDialog {
  		setIconImage(Toolkit.getDefaultToolkit().getImage(AboutUs.class.getResource("/moviecatalog/resources/icon.png")));
  		
  		JPanel panel_1 = new JPanel();
+ 		panel_1.setBackground(Color.WHITE);
  		GroupLayout groupLayout = new GroupLayout(getContentPane());
  		groupLayout.setHorizontalGroup(
  			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -65,6 +59,8 @@ public class AboutUs extends JDialog {
  		);
  		
  		JLabel lblAbout = new JLabel("");
+ 		lblAbout.setOpaque(true);
+ 		lblAbout.setBackground(Color.WHITE);
  		lblAbout.setSize(new Dimension(598, 300));
  		panel_1.add(lblAbout);
  		getContentPane().setLayout(groupLayout);

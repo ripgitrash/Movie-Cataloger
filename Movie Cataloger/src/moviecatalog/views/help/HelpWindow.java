@@ -20,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 public class HelpWindow extends JFrame {
 
@@ -60,10 +61,13 @@ public class HelpWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(0, 10, 1200, 700);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 
 		lblImage = new JLabel("");
+		lblImage.setOpaque(true);
+		lblImage.setBackground(Color.WHITE);
 		lblImage.setAlignmentY(Component.TOP_ALIGNMENT);
 		lblImage.setIcon(Tools.scaleImage(
 				new ImageIcon(HelpWindow.class.getResource("/moviecatalog/resources/Help/1.png")), 1175, 610));
